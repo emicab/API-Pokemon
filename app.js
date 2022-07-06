@@ -1,46 +1,44 @@
-let offset = 0;
-const limit = '&limit=20';
+let offset = '?offset=0';
+const limit = '&limit=1';
 
 let btnAnt = document.getElementById('btnAnterior');
 let btnSig = document.getElementById('btnSiguiente');
 
+let imgPokemon = document.querySelector('.imgPokemon');
+let nombrePokemon = document.querySelector('.nombrePokemon');
+let datosPokemon = document.querySelector('.datosPokemon');
+let statsPokemon = document.querySelector('.statsPokemon');
+
 btnSig.addEventListener('click', () =>{
-    offset += 20;
-    getData();
+    console.log('boton sig');
+    id++;
+    getData()
     
 })
 btnAnt.addEventListener('click', () =>{
-    offset -= 20;
-    getData();
+    console.log('boton atras');
+    id--;
+    getData()
 })
-let id = 1;
-const url = `https://pokeapi.co/api/v2/type/4/`;
 
+let id = 4;
 const getData = () => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
     fetch(`${url}`)
     .then(resp => resp.json())
     .then(data => {
         console.log(data);
-    })
-    
-}
-const pokeData = data => {
-    for (pokemon in data) {
-        let pokemon = { 
-            nombre : data.name,
-            id : data.id,
-            habilidad_1 : data.abilities[0],
-            habilidad_2 : data.abilities[1]
-        }
+        imgPokemon.src = data.sprites.front_default;
+        nombrePokemon.value = data.name;
+        datosPokemon.innerHTML = `
+        <span>Numero ID: ${data.id}</span>
+        <span>Peso: ${data.weight / 10}kg</span>
+        <span>Altura: ${data.height / 10}m</span>
+        `
         
-        console.log(pokemon)
-    }
-    Object.keys(pokeData).forEach(key =>{
-        document.getElementById(key).textContent = pokeData[key];
-        console.log(pokeData[key])
+        console.log(data.types);
     })
 }
-
 
 getData();
-pokeData();
+

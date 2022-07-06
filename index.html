@@ -9,15 +9,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="pokedex.css">
     <title>API Pokemon</title>
 </head>
 <body>
-    <div id="contenedor"></div>
-    <div id="nombre"></div>
-    <div class="paginacion">
-        <button id="btnAnterior" class="btn btn-anterior"><i class="fa fa-arrow-left" aria-hidden="true"></i> Anterior</button>
-        <button id="btnSiguiente" class="btn btn-siguiente">Siguiente <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+    <h1>Pokedex Pokemon v1</h1>
+    <img class="svgPokedex" src="Pokedex.svg" alt="" width="800">
+    <div id="pokedex1">
+        <div class="contenedorImg">
+            <img class="imgPokemon" src="1.png" alt="">
+        </div>
+        <div class="contenedorBtn">
+            <button id="btnAnterior" class="btn btn-anterior"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button id="btnSiguiente" class="btn btn-siguiente"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
     </div>
+    <div class="pokedex2">
+        <input class="nombrePokemon" type="text" value="NOMBRE" readonly>
+        <div class="datosPokemon">
+
+        </div>
+        <input class="statsPokemon" type="text" value="STATS" readonly>
+    </div>
+    
 
     <script src="app.js"></script>
 </body>
