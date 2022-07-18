@@ -21,24 +21,44 @@ btnAnt.addEventListener('click', () =>{
     getData()
 })
 
-let id = 4;
-const getData = () => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-    fetch(`${url}`)
-    .then(resp => resp.json())
-    .then(data => {
-        console.log(data);
-        imgPokemon.src = data.sprites.front_default;
-        nombrePokemon.value = data.name;
-        datosPokemon.innerHTML = `
-        <span>Numero ID: ${data.id}</span>
-        <span>Peso: ${data.weight / 10}kg</span>
-        <span>Altura: ${data.height / 10}m</span>
-        `
-        
-        console.log(data.types);
-    })
-}
+async function obtenerPokemones() {
 
-getData();
-
+    try {
+    
+    const listaPokemones = await fetch('https://pokeapi.co/api/v2/pokemon/')
+    const listaPokemonesData = await listaPokemones.json()
+    
+    console.log(listaPokemonesData)
+    
+    //SI QUIERES CONSULTAR SOLO UN POKEMON
+    
+    const infoPokemonUno = await fetch(listaPokemonesData.results[0].url)
+    
+    const infoPokemonUnoData = await infoPokemonUno.json()
+    
+    console.log(infoPokemonUnoData)
+    
+    //SI QUIERES CONSULTAR TODOS LOS POKEMON (PRO)
+    
+    const listaRequests = []
+    
+    for (const result of listaPokemonesData.results) {
+    
+    listaRequests.push(fetch(result.url).then(res => res.json()))
+    
+    }
+    
+    const infoTodosPokemones = await Promise.all(listaRequests)
+    
+    console.log(infoTodosPokemones)
+    
+    console.log(infoTodosPokemones[0].sprites.front_default);
+    } catch (ex) {
+    
+    console.log(ex)
+    
+    }
+    
+    }
+    
+    obtenerPokemones();
