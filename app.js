@@ -1,4 +1,4 @@
-let offset = 530;
+let offset = 0;
 const limit = '&limit=12';
 
 let btnAnt = document.getElementById('btnAnterior');

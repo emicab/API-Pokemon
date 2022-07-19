@@ -1,6 +1,4 @@
-.contenedor{
-    background-color: #44aaa4;
-    display: flex;
-    justify-content: center;
-    
+.contenedorBtn{
+    position: sticky;
+    bottom: 0;
 }
