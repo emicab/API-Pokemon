@@ -1,31 +1,27 @@
-let offset = '?offset=0';
-const limit = '&limit=1';
+let offset = 530;
+const limit = '&limit=12';
 
 let btnAnt = document.getElementById('btnAnterior');
 let btnSig = document.getElementById('btnSiguiente');
 
-let imgPokemon = document.querySelector('.imgPokemon');
-let nombrePokemon = document.querySelector('.nombrePokemon');
-let datosPokemon = document.querySelector('.datosPokemon');
-let statsPokemon = document.querySelector('.statsPokemon');
+let contenedor = document.getElementById('container')
 
 btnSig.addEventListener('click', () =>{
     console.log('boton sig');
-    id++;
-    getData()
-    
+    offset+=10;
+    obtenerPokemones()
 })
 btnAnt.addEventListener('click', () =>{
     console.log('boton atras');
-    id--;
-    getData()
+    offset-=10;
+    obtenerPokemones()
 })
 
 async function obtenerPokemones() {
 
     try {
     
-    const listaPokemones = await fetch('https://pokeapi.co/api/v2/pokemon/')
+    const listaPokemones = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=10`)
     const listaPokemonesData = await listaPokemones.json()
     
     console.log(listaPokemonesData)
@@ -36,7 +32,7 @@ async function obtenerPokemones() {
     
     const infoPokemonUnoData = await infoPokemonUno.json()
     
-    console.log(infoPokemonUnoData)
+    // console.log(infoPokemonUnoData)
     
     //SI QUIERES CONSULTAR TODOS LOS POKEMON (PRO)
     
@@ -48,17 +44,68 @@ async function obtenerPokemones() {
     
     }
     
-    const infoTodosPokemones = await Promise.all(listaRequests)
+    const dataPokemon = await Promise.all(listaRequests)
     
-    console.log(infoTodosPokemones)
-    
-    console.log(infoTodosPokemones[0].sprites.front_default);
+    console.log(dataPokemon)
+
+        pintarPokemon(dataPokemon)
+        
     } catch (ex) {
     
-    console.log(ex)
+        console.log(ex)
     
     }
     
-    }
+}
     
     obtenerPokemones();
+
+function pintarPokemon(dataPokemon){
+    dataPokemon.forEach(poke =>{
+        contenedor.innerHTML += `
+    <div class="card d-inline-flex m-3" style="max-width: 275px; max-height:600px !important;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="${poke.sprites.front_default}" class="img-fluid rounded-start text-uppercase" alt="..." width="400">
+                <p class="card-text text-center"><small class="text-muted">ID: #${poke.id}</small></p>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body p-1">
+                    <h5 class="card-title text-uppercase m-1">${poke.name}</h5>
+                    <img src="img/tipo_${poke.types[0].type.name}.jpg" class="img-fluid" alt="${poke.types[0].type.name}" width="70">
+                    <!-- Stats Pokemon -->
+                    <div class="">
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">HP:</small></span>
+                            <span class="card-te"><small class="text-muted">${poke.stats[0].base_stat}.</small></span>
+                        </div>
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">ATK:</small></span>
+                            <span class="card-text"><small class="text-muted">${poke.stats[1].base_stat}.</small></span>
+                        </div>
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">DEF:</small></span>
+                            <span class="card-text"><small class="text-muted">${poke.stats[2].base_stat}.</small></span>
+                        </div>
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">ATK_SPE:</small></span>
+                            <span class="card-text"><small class="text-muted">${poke.stats[3].base_stat}.</small></span>
+                        </div>
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">DEF_SPE:</small></span>
+                            <span class="card-text"><small class="text-muted">${poke.stats[4].base_stat}.</small></span>
+                        </div>
+                        <div class="col-3 d-inline">
+                            <span class="card-text"><small class="text-muted">SPD:</small></span>
+                            <span class="card-text"><small class="text-muted">${poke.stats[5].base_stat}.</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+    })
+    
+}
+

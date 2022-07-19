@@ -1,4 +1,6 @@
-#contenedor{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.contenedor{
+    background-color: #44aaa4;
+    display: flex;
+    justify-content: center;
+    
 }
