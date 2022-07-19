@@ -24,7 +24,7 @@ async function obtenerPokemones() {
     const listaPokemones = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=10`)
     const listaPokemonesData = await listaPokemones.json()
     
-    console.log(listaPokemonesData)
+    // console.log(listaPokemonesData)
     
     //SI QUIERES CONSULTAR SOLO UN POKEMON
     
@@ -48,20 +48,19 @@ async function obtenerPokemones() {
     
     console.log(dataPokemon)
 
-        pintarPokemon(dataPokemon)
-        
+    pintarPokemon(dataPokemon)
+    getTypes(dataPokemon)
+
     } catch (ex) {
-    
-        console.log(ex)
-    
+        console.error(ex)
     }
-    
 }
     
     obtenerPokemones();
 
 function pintarPokemon(dataPokemon){
-    dataPokemon.forEach(poke =>{
+
+    dataPokemon.forEach((poke) =>{
         contenedor.innerHTML += `
     <div class="card d-inline-flex m-3" style="max-width: 275px; max-height:600px !important;">
         <div class="row g-0">
@@ -70,9 +69,9 @@ function pintarPokemon(dataPokemon){
                 <p class="card-text text-center"><small class="text-muted">ID: #${poke.id}</small></p>
             </div>
             <div class="col-md-8">
-                <div class="card-body p-1">
-                    <h5 class="card-title text-uppercase m-1">${poke.name}</h5>
-                    <img src="img/tipo_${poke.types[0].type.name}.jpg" class="img-fluid" alt="${poke.types[0].type.name}" width="70">
+                <div class="card-body p-1 card-types">
+                    <h5 class="card-title text-uppercase m-0">${poke.name}</h5>
+                    <img src="img/tipo_${poke.types[0].type.name}.jpg" alt="" class="img-fluid" width="65">
                     <!-- Stats Pokemon -->
                     <div class="">
                         <div class="col-3 d-inline">
@@ -106,6 +105,9 @@ function pintarPokemon(dataPokemon){
     </div>
     `
     })
-    
 }
 
+const getTypes = (dataPokemon) => {
+    tiposPokemon = dataPokemon.map(data => data.types)
+    console.log(Object.entries(tiposPokemon)); 
+}
