@@ -71,7 +71,7 @@ function pintarPokemon(dataPokemon){
             <div class="col-md-8">
                 <div class="card-body p-1 card-types">
                     <h5 class="card-title text-uppercase m-0">${poke.name}</h5>
-                    <img src="img/tipo_${poke.types[0].type.name}.jpg" alt="" class="img-fluid" width="65">
+                    ${getImgTipos(poke.types)}
                     <!-- Stats Pokemon -->
                     <div class="">
                         <div class="col-3 d-inline">
@@ -107,7 +107,10 @@ function pintarPokemon(dataPokemon){
     })
 }
 
-const getTypes = (dataPokemon) => {
-    tiposPokemon = dataPokemon.map(data => data.types)
-    console.log(Object.entries(tiposPokemon)); 
+function getImgTipos(types){
+    const typeImg = types.map(
+        (type) => 
+        `<img src="img/tipo_${type.type.name}.jpg" alt="" class="img-fluid" width="65">`
+    );
+    return typeImg.join('')
 }
