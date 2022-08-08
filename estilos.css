@@ -1,5 +1,7 @@
 *{padding: 0; margin: 0; box-sizing: border-box;}
-
+::-webkit-scrollbar{
+    background-color: #242424
+}
 body{
     background-color: #242424;
     font-family: 'Roboto', sans-serif;
@@ -22,6 +24,7 @@ body{
 }
 /* Card Pokemon */
 #container{
+    
     overflow: scroll;
     overflow-x: hidden;
 }
