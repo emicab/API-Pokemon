@@ -3,6 +3,13 @@ setTimeout(()=>{
         contenedorLoader.style.opacity = 0;
         contenedorLoader.style.visibility = 'hidden';
         contenedorLoader.style.display = 'none';
+
+        Swal.fire({
+            imageUrl: './img/pokeball.png',
+            imageHeight: 150,
+            title: 'Listo! Pokemon atrapados!',
+            text: 'Click en \'Mostrar\' para ver sus datos!'
+          })
 }, 3000)
 
 
@@ -17,17 +24,6 @@ let btnMostrar = document.querySelector('.btnMostrar');
 
 
 let dataPokemon = [];
-/* Botones Reemplazados por evento Scroll
-btnSig.addEventListener('click', () =>{
-    console.log('boton sig');
-    offset+=10;
-    obtenerPokemones()
-})
-btnAnt.addEventListener('click', () =>{
-    console.log('boton atras');
-    offset-=10;
-    obtenerPokemones()
-}) */
 let id_pokemon = 0;
 async function obtenerPokemones() {
     try {
@@ -118,7 +114,7 @@ function setPokemon(pokemonObj){
     pokemonID = pokemonObj.querySelector('.id_pokemon').textContent
     pokemonID = parseInt(pokemonID.slice(3, 10))
     let pokemonSeleccionado = dataPokemon.find(pokemon => pokemon.id === pokemonID);
-    console.log(pokemonSeleccionado);
+    // console.log(pokemonSeleccionado);
     setPokemonData = {
         id: pokemonSeleccionado.id,
         nombre: pokemonSeleccionado.name,
