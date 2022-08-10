@@ -1,12 +1,20 @@
+setTimeout(()=>{
+    const contenedorLoader = document.querySelector('.contenedor-loader');
+        contenedorLoader.style.opacity = 0;
+        contenedorLoader.style.visibility = 'hidden';
+        contenedorLoader.style.display = 'none';
+}, 3000)
+
+
 let offset = 0;
-let limit = 15;
+let limit = 151;
 
 let btnAnt = document.getElementById("btnAnterior");
 let btnSig = document.getElementById("btnSiguiente");
 let container = document.getElementById("container");
 let contenedor = document.getElementById("contenedor");
-
 let btnMostrar = document.querySelector('.btnMostrar');
+
 
 let dataPokemon = [];
 /* Botones Reemplazados por evento Scroll
@@ -47,14 +55,14 @@ async function obtenerPokemones() {
         pintarPokemon(dataPokemon);
         getIdPokemon()
         
-        scroller()
+        // scroller()
         
     } catch (ex) {
         console.error(ex);
     }
 }
 
-const scroller = () =>{
+/* const scroller = () =>{
     container.addEventListener("scroll", (e) => {
         let alturaScroll = container.scrollHeight - 499;
         let scrolled = container.scrollTop;   
@@ -66,7 +74,7 @@ const scroller = () =>{
             // obtenerPokemones();
         }
     });
-}
+} */
 
 let visorPokemon = document.getElementById('visorPokemonDatos');
 function pintarPokemon(dataPokemon) {
@@ -108,7 +116,7 @@ let imgVisor = document.getElementById('imgVisor');
 
 function setPokemon(pokemonObj){
     pokemonID = pokemonObj.querySelector('.id_pokemon').textContent
-    pokemonID = parseInt(pokemonID.slice(3, 5))
+    pokemonID = parseInt(pokemonID.slice(3, 10))
     let pokemonSeleccionado = dataPokemon.find(pokemon => pokemon.id === pokemonID);
     console.log(pokemonSeleccionado);
     setPokemonData = {
@@ -116,9 +124,9 @@ function setPokemon(pokemonObj){
         nombre: pokemonSeleccionado.name,
         img: {
             frontDefault: pokemonSeleccionado.sprites.front_default,
-            frontDhiny: pokemonSeleccionado.sprites.front_shiny,
+            frontShiny: pokemonSeleccionado.sprites.front_shiny,
             backDefault: pokemonSeleccionado.sprites.back_default,
-            backDhiny: pokemonSeleccionado.sprites.back_shiny
+            backShiny: pokemonSeleccionado.sprites.back_shiny
         },
         altura: pokemonSeleccionado.height,
         peso: pokemonSeleccionado.weight,
@@ -171,10 +179,39 @@ function setPokemon(pokemonObj){
         </div>
         `
     imgVisor.innerHTML = `
-        <img class="Img-pokemon" src="${setPokemonData.img.frontDefault}">
-    
+    <div class="contenedor-img">
+        <div class="img">
+            <span>Frente</span>
+            <img class="Img-pokemon" src="${setPokemonData.img.frontDefault}">
+        </div>
+        <div class="img">
+            <span>Espalda</span>
+            <img class="Img-pokemon" src="${setPokemonData.img.backDefault}">
+        </div>
+    </div>
+    <button class="btnMostrar" id="shiny">Version Shiny 🌟</button>
     `
+    let shiny = document.getElementById('shiny');
+shiny.addEventListener('click', ()=>{
+    imgVisor.innerHTML = `
+    <div class="contenedor-img">
+        <div class="img">
+            <span>Frente</span>
+            <img class="Img-pokemon" src="${setPokemonData.img.frontShiny}">
+        </div>
+        <div class="img">
+            <span>Espalda</span>
+            <img class="Img-pokemon" src="${setPokemonData.img.backShiny}">
+        </div>
+    </div>
+    <button class="btnMostrar" id="shiny">Version Shiny 🌟</button>
+    `
+})
 }
+
+
+
+
 function main(){
     obtenerPokemones();
 }

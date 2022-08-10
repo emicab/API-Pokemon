@@ -14,6 +14,10 @@
     <title>API Pokemon</title>
 </head>
 <body>
+    <div class="contenedor-loader">
+        <h2>Por favor, espere. Se estan capturando todos los pokemon...</h2>
+        <img src="img/pokeball.png" class="pokeball_loader" alt="">
+    </div>
     <img src="img/International_Pokémon_logo.svg.png" alt="Logo Pokemon" class="img_logoPokemon">
     <div class="contenedor">
         <div class="contenedorVisor">
@@ -21,9 +25,10 @@
             <div id="imgVisor"></div>
         </div>
         <div id="container"></div>
-        
     </div>
-    
+    <footer>
+        <p>Creado por <a href="#">Emi Cabanillas</a>.</p>
+    </footer>
     <!-- <div class="contenedorBtn  d-flex justify-content-center">
             <button id="btnAnterior" class="btn btn-anterior btn-primary m-2" onclick="onload()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <button id="btnSiguiente" class="btn btn-siguiente btn-primary m-2"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
