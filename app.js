@@ -1,5 +1,5 @@
 let offset = 0;
-const limit = "&limit=20";
+let limit = 15;
 
 let btnAnt = document.getElementById("btnAnterior");
 let btnSig = document.getElementById("btnSiguiente");
@@ -8,7 +8,7 @@ let contenedor = document.getElementById("contenedor");
 
 let btnMostrar = document.querySelector('.btnMostrar');
 
-
+let dataPokemon = [];
 /* Botones Reemplazados por evento Scroll
 btnSig.addEventListener('click', () =>{
     console.log('boton sig');
@@ -23,7 +23,7 @@ btnAnt.addEventListener('click', () =>{
 let id_pokemon = 0;
 async function obtenerPokemones() {
     try {
-        const listaPokemones = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=15`);
+        const listaPokemones = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${limit}`);
         const listaPokemonesData = await listaPokemones.json();
         // console.log(listaPokemonesData);
             let number = listaPokemonesData.results.length;
@@ -33,7 +33,7 @@ async function obtenerPokemones() {
         const infoPokemonUno = await fetch(listaPokemonesData.results[id_pokemon].url);
         const infoPokemonUnoData = await infoPokemonUno.json();
         // console.log(infoPokemonUnoData)
-        setVisorPokemon(infoPokemonUnoData)
+        
         
 
         //SI QUIERES CONSULTAR TODOS LOS POKEMON (PRO)
@@ -41,7 +41,7 @@ async function obtenerPokemones() {
         for (const result of listaPokemonesData.results) {
             listaRequests.push(fetch(result.url).then((res) => res.json()));
         }
-        const dataPokemon = await Promise.all(listaRequests);
+        dataPokemon = await Promise.all(listaRequests);
 
         // console.log(dataPokemon)
         pintarPokemon(dataPokemon);
@@ -62,15 +62,16 @@ const scroller = () =>{
         // console.log(`alturaScroll ${alturaScroll}`);
         if (alturaScroll === scrolled) {
             offset += 15;
-            obtenerPokemones();
+            limit += 15;
+            // obtenerPokemones();
         }
     });
 }
 
+let visorPokemon = document.getElementById('visorPokemonDatos');
 function pintarPokemon(dataPokemon) {
     console.log(dataPokemon);
-    let visorPokemon = document.getElementById('visorPokemon');
-    visorPokemon.innerHTML = `<img src="${dataPokemon[0].sprites.front_default}" alt="">`
+    // visorPokemon.innerHTML = `<img src="${dataPokemon[0].sprites.front_default}" alt="">`
 
     dataPokemon.forEach((poke) => {
         container.innerHTML += `
@@ -88,53 +89,91 @@ function pintarPokemon(dataPokemon) {
 }
 
 function getImgTipos(types) {
-    const typeImg = types.map((type) =>`<img src="img/tipo_${type.type.name}.jpg" alt="" class="img-fluid" width="65">`);
+    const typeImg = types.map((type) =>`
+    
+    <img src="img/tipo_${type.type.name}.jpg" alt="" class="img-tipo" width="65">
+    `);
     return typeImg.join("");
 }
 
-
-
-
-
-function setVisorPokemon(infoPokemonUnoData){
-    
-    // console.log(infoPokemonUnoData);
-    setpokemon = {
-        id: infoPokemonUnoData.id,
-        nombre: infoPokemonUnoData.name,
-        img: {
-            frontDefault: infoPokemonUnoData.sprites.front_default,
-            frontDhiny: infoPokemonUnoData.sprites.front_shiny,
-            backDefault: infoPokemonUnoData.sprites.back_default,
-            backDhiny: infoPokemonUnoData.sprites.back_shiny
-        },
-        altura: infoPokemonUnoData.height,
-        peso: infoPokemonUnoData.weight,
-        estadisticas: {
-            hp: infoPokemonUnoData.stats[0].base_stat,
-            atk: infoPokemonUnoData.stats[1].base_stat,
-            def: infoPokemonUnoData.stats[2].base_stat,
-            atk_sp: infoPokemonUnoData.stats[3].base_stat,
-            def_sp: infoPokemonUnoData.stats[4].base_stat,
-            spd: infoPokemonUnoData.stats[5].base_stat,
-        }
-    }
-    console.log(setpokemon);
-}
-function setPokemon(pokemonObj){
-    pokemonID = pokemonObj.querySelector('.id_pokemon').textContent
-    pokemonID = parseInt(pokemonID.slice(3, 5))
-    console.log(pokemonID);
-}
 
 function getIdPokemon(){
     container.addEventListener('click', (e)=>{
         if(e.target.classList.contains('btnMostrar')){
             setPokemon(e.target.parentElement)
-            visorPokemon.innerHTML = ``
         }
-        
     })
+}
+let imgVisor = document.getElementById('imgVisor');
+
+function setPokemon(pokemonObj){
+    pokemonID = pokemonObj.querySelector('.id_pokemon').textContent
+    pokemonID = parseInt(pokemonID.slice(3, 5))
+    let pokemonSeleccionado = dataPokemon.find(pokemon => pokemon.id === pokemonID);
+    console.log(pokemonSeleccionado);
+    setPokemonData = {
+        id: pokemonSeleccionado.id,
+        nombre: pokemonSeleccionado.name,
+        img: {
+            frontDefault: pokemonSeleccionado.sprites.front_default,
+            frontDhiny: pokemonSeleccionado.sprites.front_shiny,
+            backDefault: pokemonSeleccionado.sprites.back_default,
+            backDhiny: pokemonSeleccionado.sprites.back_shiny
+        },
+        altura: pokemonSeleccionado.height,
+        peso: pokemonSeleccionado.weight,
+        estadisticas: {
+            hp: pokemonSeleccionado.stats[0].base_stat,
+            atk: pokemonSeleccionado.stats[1].base_stat,
+            def: pokemonSeleccionado.stats[2].base_stat,
+            atk_sp: pokemonSeleccionado.stats[3].base_stat,
+            def_sp: pokemonSeleccionado.stats[4].base_stat,
+            spd: pokemonSeleccionado.stats[5].base_stat,
+        }
+    }
+
+    visorPokemon.innerHTML = `
+        <h2 class="Nombre-pokemon">${setPokemonData.nombre}</h2>
+        <div class="Fisico-pokemon">
+            <span>ALTURA: ${setPokemonData.altura / 10}CM</span>
+            <span>PESO: ${setPokemonData.peso / 10} KG</span>
+        </div>
+        <h4>Estadisticas</h4>
+        <div class="Stats-pokemon">
+            <ul>
+                <span>HP</span>
+                <li>${setPokemonData.estadisticas.hp}</li>
+            </ul>
+            <ul>
+                <span>ATK</span>
+                <li>${setPokemonData.estadisticas.atk}</li>
+            </ul>
+            <ul>
+                <span>DEF</span>
+                <li>${setPokemonData.estadisticas.def}</li>
+            </ul>
+            <ul>
+                <span>ATK ESP</span>
+                <li>${setPokemonData.estadisticas.atk_sp}</li>
+            </ul>
+            <ul>
+                <span>DEF ESP</span>
+                <li>${setPokemonData.estadisticas.def_sp}</li>
+            </ul>
+            <ul>
+                <span>VEL</span>
+                <li>${setPokemonData.estadisticas.spd}</li>
+            </ul>
+        </div>
+        <h3>TIPO</h3>
+        <div class="ImgTipo">
+        ${getImgTipos(pokemonSeleccionado.types)}
+        </div>
+        `
+    imgVisor.innerHTML = `
+        <img class="Img-pokemon" src="${setPokemonData.img.frontDefault}">
+    
+    `
 }
 function main(){
     obtenerPokemones();
@@ -144,7 +183,7 @@ main()
 /* 
 <!-- Stats Pokemon -->
 <div class="cardPokemon--Tipo">
-    ${getImgTipos(poke.types)}
+    
 </div>
                     <div class="">
                         <div class="col-3 d-inline">

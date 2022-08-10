@@ -65,9 +65,87 @@ body{
     /* overflow: hidden; */
 }
 /* Visor Pokemon */
-#visorPokemon{
+.contenedorVisor{
     width: 80%;
     height: 100%;
-    background-color: aliceblue;
+    
     margin: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 13px;
+
+}
+
+#visorPokemonDatos{
+    background-color: #FFF3;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 13px;
+    color: #fff;
+
+    /* transform: perspective(440px) rotateY(20deg) translateX(60px); */
+    animation-name: visor;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+}
+@keyframes visor {
+    from {
+        transform: perspective(440px) rotateY(20deg) translateX(60px);
+    }
+
+    to {
+        transform: perspective(440px) rotateY(-10deg) translateX(60px);
+    }
+}
+.Nombre-pokemon{
+    text-transform: uppercase;
+    margin: 15px;
+}
+.Fisico-pokemon span{
+    display: block;
+    margin:10px 0;
+    text-align: center;
+}
+.Stats-pokemon{
+    display: flex;
+    text-align: center;
+    margin-bottom: 15px;
+    
+}
+.Stats-pokemon ul{
+    background-color: #FFF6;
+    padding: 7px;
+    border-radius: 13px;
+    list-style: none;
+    margin: 5px;
+}
+.Stats-pokemon span{
+    font-style: italic;
+    
+}
+.ImgTipo{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    width: 200px;
+}
+.img-tipo{
+    width: 90px;
+    height: 30px;
+    background-image: cover;
+}
+#imgVisor{
+    background-color: none;
+    width: 400px;
+    height: 400px;
+    display: flex;
 }
